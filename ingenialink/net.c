@@ -286,7 +286,7 @@ void il_net_disturbance_data_s32_set(il_net_t *net, int channel, int32_t disturb
 
 void il_net_disturbance_data_flt_set(il_net_t *net, int channel, float disturbance_data[2048]) 
 {
-	for (int i = 0; i < (1010/sizeof(float)); net->disturbance_data_channels[channel].value.disturbance_data_flt[i] = disturbance_data[i], i++);
+	for (int i = 0; i < (net->disturbance_data_size/sizeof(float)); net->disturbance_data_channels[channel].value.disturbance_data_flt[i] = disturbance_data[i], i++);
 }
 
 int il_net_close_socket(il_net_t *net) 

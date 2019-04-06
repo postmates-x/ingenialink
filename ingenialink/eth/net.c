@@ -934,7 +934,8 @@ static int net_send(il_eth_net_t *this, uint8_t subnode, uint16_t address, const
 		/* send frame */
 		if (extended == 1) {
 			uint16_t frame_size = sizeof(uint16_t) * ETH_MCB_FRAME_SZ;
-			uint8_t extended_frame[1024];
+			const uint16_t full_size = net->disturbance_data_size + frame_size;
+			uint8_t* extended_frame = malloc(full_size);
 
 			il_reg_dtype_t type = net->disturbance_data_channels[0].type;
 			
@@ -958,7 +959,7 @@ static int net_send(il_eth_net_t *this, uint8_t subnode, uint16_t address, const
 			}
 
 			memcpy(&extended_frame[0], frame, frame_size);
-			memcpy(&extended_frame[frame_size], pData, 1024 - frame_size);
+			memcpy(&extended_frame[frame_size], pData, (net->disturbance_data_size) - frame_size);
 			
 			r = send(this->server, (const char*)&extended_frame[0], net->disturbance_data_size + frame_size, 0);
 			// r = send(this->server, (const char*)&extended_frame[0],	1010 + frame_size, 0);
