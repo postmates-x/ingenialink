@@ -353,7 +353,7 @@ static int il_eth_net_is_slave_connected(il_net_t *net, const char *ip) {
 		}
 
 
-		iMode = 0;
+		iMode = 1;
 		r = ioctlsocket(this->server, FIONBIO, &iMode);
 		if (r != NO_ERROR)
 		{
@@ -424,7 +424,7 @@ static int il_net_reconnect(il_net_t *net)
 			printf("Connected to the Server\n");
 			this->stop = 0;
 		}
-		iMode = 0;
+		iMode = 1;
 		r = ioctlsocket(this->server, FIONBIO, &iMode);
 		if (r != NO_ERROR)
 		{
@@ -504,7 +504,7 @@ static int il_eth_net_connect(il_net_t *net, const char *ip)
 	else {
 		printf("Connected to the Server\n");
 	}
-	iMode = 0;
+	iMode = 1;
 	r = ioctlsocket(this->server, FIONBIO, &iMode);
 	if (r != NO_ERROR)
 	{
