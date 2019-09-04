@@ -109,6 +109,28 @@ typedef union {
 	int64_t s64;
 } il_reg_limit_t;
 
+/** Values. */
+typedef union {
+	/** Unsigned 8-bit value. */
+	uint8_t u8;
+	/** Signed 8-bit value. */
+	int8_t s8;
+	/** Unsigned 16-bit value. */
+	uint16_t u16;
+	/** Signed 16-bit value. */
+	int16_t s16;
+	/** Unsigned 32-bit value. */
+	uint32_t u32;
+	/** Signed 32-bit value. */
+	int32_t s32;
+	/** Unsigned 64-bit value. */
+	uint64_t u64;
+	/** Signed 64-bit value. */
+	int64_t s64;
+	/** Single-precision float. */
+	float f32;
+} il_reg_value_t;
+
 /** Range. */
 typedef struct {
 	/** Minimum. */
@@ -135,6 +157,8 @@ typedef struct {
 	const char *cat_id;
 	/** Subcategory ID. */
 	const char *scat_id;
+	/** Cached value */
+	il_reg_value_t value;
 } il_reg_t;
 
 /** @} */
