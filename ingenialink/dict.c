@@ -314,6 +314,42 @@ static int get_dtype(const char *name, il_reg_dtype_t *dtype)
 	return IL_EINVAL;
 }
 
+static int get_value(const char *param, const il_reg_dtype_t *dtype, il_reg_value_t *value)
+{
+	switch (*dtype) {
+	case IL_REG_DTYPE_U8:
+		value->u8 = (uint8_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_S8:
+		value->s8 = (int8_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_U16:
+		value->u16 = (uint16_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_S16:
+		value->s16 = (int16_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_U32:
+		value->u32 = (uint32_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_S32:
+		value->s32 = (int32_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_U64:
+		value->u64 = (uint64_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_S64:
+		value->s64 = (int64_t)strtoul(param, NULL, 0);
+		break;
+	case IL_REG_DTYPE_FLOAT:
+		value->s64 = (float)strtof(param, NULL);
+		break;
+	case IL_REG_DTYPE_STR:
+		break; // Unsupported
+	}
+	return 0;
+}
+
 /**
  * Obtain access type from dictionary name.
  *
@@ -621,6 +657,17 @@ static int parse_reg(xmlNodePtr node, il_dict_t *dict)
 	} else {
 		reg->scat_id = NULL;
 	}
+
+	/* parse: register value (optional) */
+	param = xmlGetProp(node, (const xmlChar *)"value");
+	if (param) {
+		r = get_value((char *)param, &reg->dtype, &reg->value);
+		xmlFree(param);
+		if (r < 0)
+			return r;
+	}
+
+
 
 	/* assign default min/max */
 	switch (reg->dtype) {
