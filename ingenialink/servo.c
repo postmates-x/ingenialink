@@ -197,6 +197,36 @@ void il_servo_units_acc_set(il_servo_t *servo, il_units_acc_t units)
 	servo->ops->units_acc_set(servo, units);
 }
 
+int il_servo_raw_read_auto(il_servo_t *servo, const il_reg_t *reg)
+{
+	if (reg->access == IL_REG_ACCESS_WO) {
+		return IL_EINVAL;
+	}
+	uint8_t * buf = (uint8_t *)&reg->value;
+	switch (reg->dtype) {
+	case IL_REG_DTYPE_U8:
+		return servo->ops->raw_read_u8(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_S8:
+		return servo->ops->raw_read_s8(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_U16:
+		return servo->ops->raw_read_u16(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_S16:
+		return servo->ops->raw_read_s16(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_U32:
+		return servo->ops->raw_read_u32(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_S32:
+		return servo->ops->raw_read_s32(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_U64:
+		return servo->ops->raw_read_u64(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_S64:
+		return servo->ops->raw_read_s64(servo, reg, NULL, buf);
+	case IL_REG_DTYPE_FLOAT:
+		return servo->ops->raw_read_float(servo, reg, NULL, buf);
+	default:
+		return IL_ENOTSUP;
+	}
+}
+
 int il_servo_raw_read_u8(il_servo_t *servo, const il_reg_t *reg, const char *id,
 			 uint8_t *buf)
 {
@@ -255,6 +285,36 @@ int il_servo_read(il_servo_t *servo, const il_reg_t *reg, const char *id,
 		  double *buf)
 {
 	return servo->ops->read(servo, reg, id, buf);
+}
+
+int il_servo_raw_write_auto(il_servo_t *servo, const il_reg_t *reg, int confirm)
+{
+	if (reg->access == IL_REG_ACCESS_RO) {
+		return IL_EINVAL;
+	}
+	const uint8_t * buf = (const uint8_t *)&reg->value;
+	switch (reg->dtype) {
+	case IL_REG_DTYPE_U8:
+		return servo->ops->raw_write_u8(servo, reg, NULL, reg->value.u8, confirm);
+	case IL_REG_DTYPE_S8:
+		return servo->ops->raw_write_s8(servo, reg, NULL, reg->value.s8, confirm);
+	case IL_REG_DTYPE_U16:
+		return servo->ops->raw_write_u16(servo, reg, NULL, reg->value.u16, confirm);
+	case IL_REG_DTYPE_S16:
+		return servo->ops->raw_write_s16(servo, reg, NULL, reg->value.s16, confirm);
+	case IL_REG_DTYPE_U32:
+		return servo->ops->raw_write_u32(servo, reg, NULL, reg->value.u32, confirm);
+	case IL_REG_DTYPE_S32:
+		return servo->ops->raw_write_s32(servo, reg, NULL, reg->value.s32, confirm);
+	case IL_REG_DTYPE_U64:
+		return servo->ops->raw_write_u64(servo, reg, NULL, reg->value.u64, confirm);
+	case IL_REG_DTYPE_S64:
+		return servo->ops->raw_write_s64(servo, reg, NULL, reg->value.s64, confirm);
+	case IL_REG_DTYPE_FLOAT:
+		return servo->ops->raw_write_float(servo, reg, NULL, reg->value.f32, confirm);
+	default:
+		return IL_ENOTSUP;
+	}
 }
 
 int il_servo_raw_write_u8(il_servo_t *servo, const il_reg_t *reg,

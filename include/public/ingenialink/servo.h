@@ -548,6 +548,20 @@ IL_EXPORT il_units_acc_t il_servo_units_acc_get(il_servo_t *servo);
 IL_EXPORT void il_servo_units_acc_set(il_servo_t *servo, il_units_acc_t units);
 
 /**
+ * Read value from a register, using register metadata to deduce type.
+ * Value is stored in il_reg_t value union.
+ *
+ * @param [in] servo
+ *	IngeniaLink servo.
+ * @param [in] reg
+ *	Pre-defined register.
+ *
+ * @return
+ *	0 on success, error code otherwise.
+ */
+IL_EXPORT int il_servo_raw_read_auto(il_servo_t *servo, const il_reg_t *reg);
+
+/**
  * Read unsigned 8-bit value from a register.
  *
  * @param [in] servo
@@ -729,6 +743,21 @@ IL_EXPORT int il_servo_raw_read_float(il_servo_t *servo, const il_reg_t *reg,
  */
 IL_EXPORT int il_servo_read(il_servo_t *servo, const il_reg_t *reg,
 			    const char *id, double *buf);
+
+/**
+ * Write value to a register using value in reg's value field.
+ *
+ * @param [in] servo
+ *	IngeniaLink servo.
+ * @param [in] reg
+ *	Pre-defined register.
+ * @param [in] confirm
+ *	Confirm the write.
+ *
+ * @return
+ *	0 on success, error code otherwise.
+ */
+int il_servo_raw_write_auto(il_servo_t *servo, const il_reg_t *reg, int confirm);
 
 /**
  * Write unsigned 8-bit integer to a register.
